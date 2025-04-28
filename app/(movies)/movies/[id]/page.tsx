@@ -15,18 +15,21 @@ import MovieVideos from "../../../components/movie-videos";
 //     return <h1>Movie {id}</h1>;
 // }
 
-interface IParams {
-    params: { id: string };
-}
+type IParams = Promise<{ id: string }>;
 
-export async function generateMetadata({ params: { id } }: IParams) {
+export async function generateMetadata(props: { params: IParams }) {
+    // const movie = await getMovie(id);
+    const params = await props.params;
+    const id = params.id;
     const movie = await getMovie(id);
     return {
         title: movie.title,
     };
 }
 
-export default async function MovieDetail({ params: { id } }: IParams) {
+export default async function MovieDetail(props: { params: IParams }) {
+    const params = await props.params;
+    const id = params.id;
     return (
         <div>
             <Suspense fallback={<h1>Loading movie info...</h1>}>
